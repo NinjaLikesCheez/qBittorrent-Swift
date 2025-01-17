@@ -212,4 +212,17 @@ public extension Request {
 			transform: Self.statusResponse(data:response:)
 		)
 	}
+
+	static func contents(hash: String, indices: [Int]? = nil) -> Request<[Torrent.Content]> {
+		var arguments = ["hash": hash]
+		if let indices {
+			arguments["indexes"] = indices.map(String.init).joined(separator: "|")
+		}
+
+		return .init(
+			name: "torrents",
+			method: "files",
+			body: FormBody(arguments)
+		)
+	}
 }

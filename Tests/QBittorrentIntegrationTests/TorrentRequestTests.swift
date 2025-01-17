@@ -63,4 +63,10 @@ class TorrentRequestTests {
 			)
 		)
 	}
+
+	@Test
+	func test_contents() async throws {
+		let contents = try await client.request(.contents(hash: TestConfig.torrent1Hash))
+		print(contents)
+	}
 }

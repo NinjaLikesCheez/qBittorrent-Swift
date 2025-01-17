@@ -39,7 +39,7 @@ public struct Torrent: Decodable {
 	let numLeechs: Int
 	let numSeeds: Int
 	let popularity: Double
-	let priority: Int
+	let priority: Priority
 	let `private`: Bool
 	let progress: Double
 	let ratio: Double
@@ -163,5 +163,24 @@ public struct Torrent: Decodable {
 
 	public struct Tag: Decodable {
 		let name: String
+	}
+
+	public enum Priority: Int, Decodable {
+		case doNotDownload = 0
+		case low = 1
+		case normal = 2
+		case high = 6
+		case maximal = 7
+	}
+
+	public struct Content: Decodable {
+		public let index: Int
+		public let name: String
+		public let size: Int
+		public let progress: Double
+		public let priority: Priority
+		public let isSeed: Bool
+		public let pieceRange: [Int]
+		public let availability: Double
 	}
 }
