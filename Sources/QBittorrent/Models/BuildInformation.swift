@@ -6,11 +6,11 @@
 //
 
 public struct BuildInformation: Decodable {
-	let qt: String
-	let libTorrent: String
-	let boost: String
-	let openssl: String
-	let bitness: Int
+	public let qt: String
+	public let libTorrent: String
+	public let boost: String
+	public let openssl: String
+	public let bitness: Int
 
 	enum CodingKeys: String, CodingKey {
 		case qt

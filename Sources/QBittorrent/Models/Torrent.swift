@@ -6,63 +6,63 @@
 //
 
 public struct Torrent: Decodable {
-	let addedOn: Int
-	let amountLeft: Int
-	let autoTmm: Bool
-	let availability: Double
-	let category: String
-	let comment: String
-	let completed: Int
-	let completionOn: Int
-	let contentPath: String
-	let dlLimit: Int
-	let dlspeed: Int
-	let downloadPath: String
-	let downloaded: Int
-	let downloadedSession: Int
-	let eta: Int
-	let fLPiecePrio: Bool
-	let forceStart: Bool
-	let hasMetadata: Bool
-	let hash: String
-	let inactiveSeedingTimeLimit: Int
-	let infohashV1: String
-	let infohashV2: String
-	let lastActivity: Int
-	let magnetUri: String
-	let maxInactiveSeedingTime: Int
-	let maxRatio: Float
-	let maxSeedingTime: Int
-	let name: String
-	let numComplete: Int
-	let numIncomplete: Int
-	let numLeechs: Int
-	let numSeeds: Int
-	let popularity: Double
-	let priority: Priority
-	let `private`: Bool
-	let progress: Double
-	let ratio: Double
-	let ratioLimit: Double
-	let reannounce: Int
-	let rootPath: String
-	let savePath: String
-	let seedingTime: Int
-	let seedingTimeLimit: Int
-	let seenComplete: Int
-	let seqDl: Bool
-	let size: Int
-	let state: String
-	let superSeeding: Bool
-	let tags: [Tag]
-	let timeActive: Int
-	let totalSize: Int
-	let tracker: String
-	let trackersCount: Int
-	let upLimit: Int
-	let uploaded: Int
-	let uploadedSession: Int
-	let upspeed: Int
+	public let addedOn: Int
+	public let amountLeft: Int
+	public let autoTmm: Bool
+	public let availability: Double
+	public let category: String
+	public let comment: String
+	public let completed: Int
+	public let completionOn: Int
+	public let contentPath: String
+	public let dlLimit: Int
+	public let dlspeed: Int
+	public let downloadPath: String
+	public let downloaded: Int
+	public let downloadedSession: Int
+	public let eta: Int
+	public let fLPiecePrio: Bool
+	public let forceStart: Bool
+	public let hasMetadata: Bool
+	public let hash: String
+	public let inactiveSeedingTimeLimit: Int
+	public let infohashV1: String
+	public let infohashV2: String
+	public let lastActivity: Int
+	public let magnetUri: String
+	public let maxInactiveSeedingTime: Int
+	public let maxRatio: Float
+	public let maxSeedingTime: Int
+	public let name: String
+	public let numComplete: Int
+	public let numIncomplete: Int
+	public let numLeechs: Int
+	public let numSeeds: Int
+	public let popularity: Double
+	public let priority: Priority
+	public let `private`: Bool
+	public let progress: Double
+	public let ratio: Double
+	public let ratioLimit: Double
+	public let reannounce: Int
+	public let rootPath: String
+	public let savePath: String
+	public let seedingTime: Int
+	public let seedingTimeLimit: Int
+	public let seenComplete: Int
+	public let seqDl: Bool
+	public let size: Int
+	public let state: String
+	public let superSeeding: Bool
+	public let tags: [Tag]
+	public let timeActive: Int
+	public let totalSize: Int
+	public let tracker: String
+	public let trackersCount: Int
+	public let upLimit: Int
+	public let uploaded: Int
+	public let uploadedSession: Int
+	public let upspeed: Int
 
 	public enum CodingKeys: String, CodingKey {
 		case addedOn
@@ -162,7 +162,7 @@ public struct Torrent: Decodable {
 	}
 
 	public struct Tag: Decodable {
-		let name: String
+		public let name: String
 	}
 
 	public enum Priority: Int, Decodable {

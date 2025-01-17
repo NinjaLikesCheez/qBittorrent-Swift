@@ -6,152 +6,152 @@
 //
 
 public struct ApplicationPreferences: Codable {
-	let locale: String
-	let createSubfolderEnabled: Bool?
-	let startPausedEnabled: Bool?
-	let autoDeleteMode: Int
-	let preallocateAll: Bool
-	let incompleteFilesExt: Bool
-	let autoTmmEnabled: Bool
-	let torrentChangedTmmEnabled: Bool
-	let savePathChangedTmmEnabled: Bool
-	let categoryChangedTmmEnabled: Bool
-	let savePath: String
-	let tempPathEnabled: Bool
-	let tempPath: String
-	let scanDirs: ScanDirs
-	let exportDir: String
-	let exportDirFin: String
-	let mailNotificationEnabled: Bool
-	let mailNotificationSender: String
-	let mailNotificationEmail: String
-	let mailNotificationSmtp: String
-	let mailNotificationSslEnabled: Bool
-	let mailNotificationAuthEnabled: Bool
-	let mailNotificationUsername: String
-	let mailNotificationPassword: String
-	let autorunEnabled: Bool
-	let autorunProgram: String
-	let queueingEnabled: Bool
-	let maxActiveDownloads: Int
-	let maxActiveTorrents: Int
-	let maxActiveUploads: Int
-	let dontCountSlowTorrents: Bool
-	let slowTorrentDlRateThreshold: Int
-	let slowTorrentUlRateThreshold: Int
-	let slowTorrentInactiveTimer: Int
-	let maxRatioEnabled: Bool
-	let maxRatio: Float
-	let maxRatioAct: MaxRatioAction
-	let listenPort: Int
-	let upnp: Bool
-	let randomPort: Bool
-	let dlLimit: Int
-	let upLimit: Int
-	let maxConnec: Int
-	let maxConnecPerTorrent: Int
-	let maxUploads: Int
-	let maxUploadsPerTorrent: Int
-	let stopTrackerTimeout: Int
-	let enablePieceExtentAffinity: Bool
-	let bittorrentProtocol: Int
-	let limitUtpRate: Bool
-	let limitTcpOverhead: Bool
-	let limitLanPeers: Bool
-	let altDlLimit: Int
-	let altUpLimit: Int
-	let schedulerEnabled: Bool
-	let scheduleFromHour: Int
-	let scheduleFromMin: Int
-	let scheduleToHour: Int
-	let scheduleToMin: Int
-	let schedulerDays: SchedulerDays
-	let dht: Bool
-	let pex: Bool
-	let lsd: Bool
-	let encryption: Encryption
-	let anonymousMode: Bool
-	let proxyType: ProxyType
-	let proxyIp: String
-	let proxyPort: Int
-	let proxyPeerConnections: Bool
-	let proxyAuthEnabled: Bool
-	let proxyUsername: String
-	let proxyPassword: String
-	let proxyTorrentsOnly: Bool?
-	let ipFilterEnabled: Bool
-	let ipFilterPath: String
-	let ipFilterTrackers: Bool
-	let webUiDomainList: String
-	let webUiAddress: String
-	let webUiPort: Int
-	let webUiUpnp: Bool
-	let webUiUsername: String
-	let webUiPassword: String?
-	let webUiCsrfProtectionEnabled: Bool
-	let webUiClickjackingProtectionEnabled: Bool
-	let webUiSecureCookieEnabled: Bool
-	let webUiMaxAuthFailCount: Int
-	let webUiBanDuration: Int
-	let webUiSessionTimeout: Int
-	let webUiHostHeaderValidationEnabled: Bool
-	let bypassLocalAuth: Bool
-	let bypassAuthSubnetWhitelistEnabled: Bool
-	let bypassAuthSubnetWhitelist: String
-	let alternativeWebuiEnabled: Bool
-	let alternativeWebuiPath: String
-	let useHttps: Bool
-	let sslKey: String?
-	let sslCert: String?
-	let webUiHttpsKeyPath: String
-	let webUiHttpsCertPath: String
-	let dyndnsEnabled: Bool
-	let dyndnsService: dynDNSService
-	let dyndnsUsername: String
-	let dyndnsPassword: String
-	let dyndnsDomain: String
-	let rssRefreshInterval: Int
-	let rssMaxArticlesPerFeed: Int
-	let rssProcessingEnabled: Bool
-	let rssAutoDownloadingEnabled: Bool
-	let rssDownloadRepackProperEpisodes: Bool
-	let rssSmartEpisodeFilters: String
-	let addTrackersEnabled: Bool
-	let addTrackers: String
-	let webUiUseCustomHttpHeadersEnabled: Bool
-	let webUiCustomHttpHeaders: String
-	let maxSeedingTimeEnabled: Bool
-	let maxSeedingTime: Int
-	let announceIp: String
-	let announceToAllTiers: Bool
-	let announceToAllTrackers: Bool
-	let asyncIoThreads: Int
-	let bannedIps: String
-	let checkingMemoryUse: Int
-	let currentInterfaceAddress: String
-	let currentNetworkInterface: String
-	let diskCache: Int
-	let diskCacheTtl: Int
-	let embeddedTrackerPort: Int
-	let enableCoalesceReadWrite: Bool
-	let enableEmbeddedTracker: Bool
-	let enableMultiConnectionsFromSameIp: Bool
-	let enableOsCache: Bool?
-	let enableUploadSuggestions: Bool
-	let filePoolSize: Int
-	let outgoingPortsMax: Int
-	let outgoingPortsMin: Int
-	let recheckCompletedTorrents: Bool
-	let resolvePeerCountries: Bool
-	let saveResumeDataInterval: Int
-	let sendBufferLowWatermark: Int
-	let sendBufferWatermark: Int
-	let sendBufferWatermarkFactor: Int
-	let socketBacklogSize: Int
-	let uploadChokingAlgorithm: UploadChokingAlgorithm
-	let uploadSlotsBehavior: UploadSlotBehavior
-	let upnpLeaseDuration: Int
-	let utpTcpMixedMode: UTPTCPMixedMode
+	public let locale: String
+	public let createSubfolderEnabled: Bool?
+	public let startPausedEnabled: Bool?
+	public let autoDeleteMode: Int
+	public let preallocateAll: Bool
+	public let incompleteFilesExt: Bool
+	public let autoTmmEnabled: Bool
+	public let torrentChangedTmmEnabled: Bool
+	public let savePathChangedTmmEnabled: Bool
+	public let categoryChangedTmmEnabled: Bool
+	public let savePath: String
+	public let tempPathEnabled: Bool
+	public let tempPath: String
+	public let scanDirs: ScanDirs
+	public let exportDir: String
+	public let exportDirFin: String
+	public let mailNotificationEnabled: Bool
+	public let mailNotificationSender: String
+	public let mailNotificationEmail: String
+	public let mailNotificationSmtp: String
+	public let mailNotificationSslEnabled: Bool
+	public let mailNotificationAuthEnabled: Bool
+	public let mailNotificationUsername: String
+	public let mailNotificationPassword: String
+	public let autorunEnabled: Bool
+	public let autorunProgram: String
+	public let queueingEnabled: Bool
+	public let maxActiveDownloads: Int
+	public let maxActiveTorrents: Int
+	public let maxActiveUploads: Int
+	public let dontCountSlowTorrents: Bool
+	public let slowTorrentDlRateThreshold: Int
+	public let slowTorrentUlRateThreshold: Int
+	public let slowTorrentInactiveTimer: Int
+	public let maxRatioEnabled: Bool
+	public let maxRatio: Float
+	public let maxRatioAct: MaxRatioAction
+	public let listenPort: Int
+	public let upnp: Bool
+	public let randomPort: Bool
+	public let dlLimit: Int
+	public let upLimit: Int
+	public let maxConnec: Int
+	public let maxConnecPerTorrent: Int
+	public let maxUploads: Int
+	public let maxUploadsPerTorrent: Int
+	public let stopTrackerTimeout: Int
+	public let enablePieceExtentAffinity: Bool
+	public let bittorrentProtocol: Int
+	public let limitUtpRate: Bool
+	public let limitTcpOverhead: Bool
+	public let limitLanPeers: Bool
+	public let altDlLimit: Int
+	public let altUpLimit: Int
+	public let schedulerEnabled: Bool
+	public let scheduleFromHour: Int
+	public let scheduleFromMin: Int
+	public let scheduleToHour: Int
+	public let scheduleToMin: Int
+	public let schedulerDays: SchedulerDays
+	public let dht: Bool
+	public let pex: Bool
+	public let lsd: Bool
+	public let encryption: Encryption
+	public let anonymousMode: Bool
+	public let proxyType: ProxyType
+	public let proxyIp: String
+	public let proxyPort: Int
+	public let proxyPeerConnections: Bool
+	public let proxyAuthEnabled: Bool
+	public let proxyUsername: String
+	public let proxyPassword: String
+	public let proxyTorrentsOnly: Bool?
+	public let ipFilterEnabled: Bool
+	public let ipFilterPath: String
+	public let ipFilterTrackers: Bool
+	public let webUiDomainList: String
+	public let webUiAddress: String
+	public let webUiPort: Int
+	public let webUiUpnp: Bool
+	public let webUiUsername: String
+	public let webUiPassword: String?
+	public let webUiCsrfProtectionEnabled: Bool
+	public let webUiClickjackingProtectionEnabled: Bool
+	public let webUiSecureCookieEnabled: Bool
+	public let webUiMaxAuthFailCount: Int
+	public let webUiBanDuration: Int
+	public let webUiSessionTimeout: Int
+	public let webUiHostHeaderValidationEnabled: Bool
+	public let bypassLocalAuth: Bool
+	public let bypassAuthSubnetWhitelistEnabled: Bool
+	public let bypassAuthSubnetWhitelist: String
+	public let alternativeWebuiEnabled: Bool
+	public let alternativeWebuiPath: String
+	public let useHttps: Bool
+	public let sslKey: String?
+	public let sslCert: String?
+	public let webUiHttpsKeyPath: String
+	public let webUiHttpsCertPath: String
+	public let dyndnsEnabled: Bool
+	public let dyndnsService: dynDNSService
+	public let dyndnsUsername: String
+	public let dyndnsPassword: String
+	public let dyndnsDomain: String
+	public let rssRefreshInterval: Int
+	public let rssMaxArticlesPerFeed: Int
+	public let rssProcessingEnabled: Bool
+	public let rssAutoDownloadingEnabled: Bool
+	public let rssDownloadRepackProperEpisodes: Bool
+	public let rssSmartEpisodeFilters: String
+	public let addTrackersEnabled: Bool
+	public let addTrackers: String
+	public let webUiUseCustomHttpHeadersEnabled: Bool
+	public let webUiCustomHttpHeaders: String
+	public let maxSeedingTimeEnabled: Bool
+	public let maxSeedingTime: Int
+	public let announceIp: String
+	public let announceToAllTiers: Bool
+	public let announceToAllTrackers: Bool
+	public let asyncIoThreads: Int
+	public let bannedIps: String
+	public let checkingMemoryUse: Int
+	public let currentInterfaceAddress: String
+	public let currentNetworkInterface: String
+	public let diskCache: Int
+	public let diskCacheTtl: Int
+	public let embeddedTrackerPort: Int
+	public let enableCoalesceReadWrite: Bool
+	public let enableEmbeddedTracker: Bool
+	public let enableMultiConnectionsFromSameIp: Bool
+	public let enableOsCache: Bool?
+	public let enableUploadSuggestions: Bool
+	public let filePoolSize: Int
+	public let outgoingPortsMax: Int
+	public let outgoingPortsMin: Int
+	public let recheckCompletedTorrents: Bool
+	public let resolvePeerCountries: Bool
+	public let saveResumeDataInterval: Int
+	public let sendBufferLowWatermark: Int
+	public let sendBufferWatermark: Int
+	public let sendBufferWatermarkFactor: Int
+	public let socketBacklogSize: Int
+	public let uploadChokingAlgorithm: UploadChokingAlgorithm
+	public let uploadSlotsBehavior: UploadSlotBehavior
+	public let upnpLeaseDuration: Int
+	public let utpTcpMixedMode: UTPTCPMixedMode
 
 	func encode() -> [String: Any] {
 		var dict = [String: Any]()
