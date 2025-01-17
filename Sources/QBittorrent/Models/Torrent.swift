@@ -52,7 +52,7 @@ public struct Torrent: Decodable {
 	public let seenComplete: Int
 	public let seqDl: Bool
 	public let size: Int
-	public let state: String
+	public let state: State
 	public let superSeeding: Bool
 	public let tags: [Tag]
 	public let timeActive: Int
