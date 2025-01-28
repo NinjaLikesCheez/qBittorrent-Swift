@@ -14,22 +14,30 @@ extension QBittorrent {
 	}
 }
 
-extension Request {
+public struct QBittorrentRequest<QBittorrentResponse: Decodable>: Request {
+	public typealias Response = QBittorrentResponse
+
+	public var method: HTTPMethod
+	public var path: String?
+	public var headers: HTTPFields
+	public var body: RequestBody?
+	public var prepare: ((URLRequest) -> URLRequest)
+	public var transform: ((Data, HTTPURLResponse) throws -> Response)?
+
 	init(
 		name: String,
 		method: String,
 		httpMethod: HTTPMethod = .post,
 		headers: HTTPFields = [:],
 		body: RequestBody? = nil,
-		transform: (@Sendable (Data, HTTPURLResponse) throws -> Value)? = nil
+		transform: (@Sendable (Data, HTTPURLResponse) throws -> Response)? = nil
 	) {
-		self = .init(
-			method: httpMethod,
-			path: "\(name)/\(method)",
-			headers: headers,
-			body: body,
-			transform: transform
-		)
+		self.method = httpMethod
+		self.path = "\(name)/\(method)"
+		self.headers = headers
+		self.body = body
+		self.prepare = { $0 }
+		self.transform = transform
 	}
 
 	@discardableResult
@@ -54,19 +62,19 @@ extension Request {
  }
 }
 
-extension Request {
+extension QBittorrentRequest {
 	private static func handleTransform(
 		_ data: Data,
 		response: HTTPURLResponse,
-		injected: ((Data, HTTPURLResponse) throws -> Value)?
-	) throws -> Value {
+		injected: ((Data, HTTPURLResponse) throws -> Response)?
+	) throws -> Response {
 		do {
 			if let injected {
 				let transformed = try injected(data, response)
 				return transformed
 			}
 
-			let response = try JSONDecoder().decode(Value.self, from: data)
+			let response = try JSONDecoder().decode(Response.self, from: data)
 
 			return response
 		} catch let error as QBittorrentClient.Error {

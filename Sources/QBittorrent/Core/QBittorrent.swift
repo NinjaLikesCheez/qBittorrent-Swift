@@ -96,7 +96,7 @@ public extension QBittorrent {
 	/// Sends a request to the server.
 	/// - Parameter request: The request to be sent to the server.
 	/// - Returns: A publisher that emits a value when the request completes.
-	func request<Value>(_ request: Request<Value>) -> AnyPublisher<Value, QBittorrentClient.Error> {
+	func request<Value>(_ request: QBittorrentRequest<Value>) -> AnyPublisher<Value, QBittorrentClient.Error> {
 		let retryIfNeeded = { (error: QBittorrentClient.Error) -> AnyPublisher<Value, QBittorrentClient.Error> in
 			guard case .response(.unauthenticated) = error else {
 				return Fail(error: error)
@@ -128,7 +128,7 @@ public extension QBittorrent {
 	/// - Parameter request: The request to be sent to the server.
 	/// - Returns: A publisher that emits a value when the request completes.
 	@discardableResult
-	func request<Value>(_ request: Request<Value>) async throws(QBittorrentClient.Error) -> Value {
+	func request<Value>(_ request: QBittorrentRequest<Value>) async throws(QBittorrentClient.Error) -> Value {
 		do {
 			return try await client.request(request)
 		} catch {
@@ -136,7 +136,7 @@ public extension QBittorrent {
 				throw error
 			}
 
-			let authenticated = try await client.request(.authenticate(username: username, password: password))
+			let authenticated = try await client.request(QBittorrentRequest<Bool>.authenticate(username: username, password: password))
 			if !authenticated {
 				throw .response(.unauthenticated)
 			}

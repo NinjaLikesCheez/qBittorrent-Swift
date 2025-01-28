@@ -7,7 +7,7 @@
 import APIClient
 import Foundation
 
-public extension Request {
+public extension QBittorrentRequest {
 	static func torrents(
 		filter: Torrent.State.Filter? = nil,
 		category: String? = nil,
@@ -17,7 +17,7 @@ public extension Request {
 		limit: Int? = nil,
 		offset: Int? = nil,
 		hashes: String? = nil
-	) -> Request<[Torrent]> {
+	) -> QBittorrentRequest<[Torrent]> {
 		var body = [String: String]()
 
 		if let filter {
@@ -45,7 +45,7 @@ public extension Request {
 		)
 	}
 
-	static func stop(hashes: [String] = ["all"]) -> Request<QBittorrent.StatusResponse> {
+	static func stop(hashes: [String] = ["all"]) -> QBittorrentRequest<QBittorrent.StatusResponse> {
 		.init(
 			name: "torrents",
 			method: "stop", // Yes this is called stop even though the docs say pause..........
@@ -54,17 +54,17 @@ public extension Request {
 		)
 	}
 
-	static func resume(hashes: [String] = ["all"]) -> Request<QBittorrent.StatusResponse> {
+	static func start(hashes: [String] = ["all"]) -> QBittorrentRequest<QBittorrent.StatusResponse> {
 		.init(
 			name: "torrents",
-			method: "start",
+			method: "start", // Yes this is called start even though the docs say resume..........
 			body: FormBody(["hashes": hashes.joined(separator: "|")]),
 			transform: Self.statusResponse(data:response:)
 		)
 	}
 
 	// Pass "all" as hashes to remove all torrents
-	static func delete(hashes: [String], deleteFiles: Bool) -> Request<QBittorrent.StatusResponse> {
+	static func delete(hashes: [String], deleteFiles: Bool) -> QBittorrentRequest<QBittorrent.StatusResponse> {
 		.init(
 			name: "torrents",
 			method: "delete",
@@ -73,7 +73,7 @@ public extension Request {
 		)
 	}
 
-	static func recheck(hashes: [String] = ["all"]) -> Request<QBittorrent.StatusResponse> {
+	static func recheck(hashes: [String] = ["all"]) -> QBittorrentRequest<QBittorrent.StatusResponse> {
 		.init(
 			name: "torrents",
 			method: "recheck",
@@ -82,7 +82,7 @@ public extension Request {
 		)
 	}
 
-	static func addTags(_ hashes: [String] = ["all"], tags: [String]) -> Request<QBittorrent.StatusResponse> {
+	static func addTags(_ hashes: [String] = ["all"], tags: [String]) -> QBittorrentRequest<QBittorrent.StatusResponse> {
 		.init(
 			name: "torrents",
 			method: "addTags",
@@ -108,7 +108,7 @@ public extension Request {
 		autoTMM: Bool? = nil,
 		sequentialDownload: String? = nil,
 		firstLastPiecePrio: String? = nil
-	) throws -> Request<QBittorrent.StatusResponse> {
+	) throws -> QBittorrentRequest<QBittorrent.StatusResponse> {
 		var values = [MultipartFormBody.FormValue]()
 
 		let files = urls.filter({ $0.isFileURL })
@@ -186,7 +186,7 @@ public extension Request {
 		)
 	}
 
-	static func reannounce(hashes: [String] = ["all"]) -> Request<QBittorrent.StatusResponse> {
+	static func reannounce(hashes: [String] = ["all"]) -> QBittorrentRequest<QBittorrent.StatusResponse> {
 		.init(
 			name: "torrents",
 			method: "reannounce",
@@ -195,7 +195,7 @@ public extension Request {
 		)
 	}
 
-	static func renameFolder(hash: String, from oldPath: String, to newPath: String) -> Request<QBittorrent.StatusResponse> {
+	static func renameFolder(hash: String, from oldPath: String, to newPath: String) -> QBittorrentRequest<QBittorrent.StatusResponse> {
 		.init(
 			name: "torrents",
 			method: "renameFolder",
@@ -204,7 +204,7 @@ public extension Request {
 		)
 	}
 
-	static func renameFile(hash: String, from oldPath: String, to newPath: String) -> Request<QBittorrent.StatusResponse> {
+	static func renameFile(hash: String, from oldPath: String, to newPath: String) -> QBittorrentRequest<QBittorrent.StatusResponse> {
 		.init(
 			name: "torrents",
 			method: "renameFile",
@@ -213,7 +213,7 @@ public extension Request {
 		)
 	}
 
-	static func contents(hash: String, indices: [Int]? = nil) -> Request<[Torrent.Content]> {
+	static func contents(hash: String, indices: [Int]? = nil) -> QBittorrentRequest<[Torrent.Content]> {
 		var arguments = ["hash": hash]
 		if let indices {
 			arguments["indexes"] = indices.map(String.init).joined(separator: "|")

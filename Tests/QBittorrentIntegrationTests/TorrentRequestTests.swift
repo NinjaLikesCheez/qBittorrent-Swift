@@ -30,7 +30,7 @@ class TorrentRequestTests {
 
 	@Test
 	func test_start_torrent() async throws {
-		try await client.request(.resume(hashes: [TestConfig.torrent1Hash]))
+		try await client.request(.start(hashes: [TestConfig.torrent1Hash]))
 	}
 
 	@Test

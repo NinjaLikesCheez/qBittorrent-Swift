@@ -54,7 +54,7 @@ public struct Torrent: Decodable {
 	public let size: Int
 	public let state: State
 	public let superSeeding: Bool
-	public let tags: [Tag]
+	public let tags: String
 	public let timeActive: Int
 	public let totalSize: Int
 	public let tracker: String
@@ -128,19 +128,19 @@ public struct Torrent: Decodable {
 		case error
 		case missingFiles
 		case uploading
-		case pausedUpload = "pausedUP"
+		case stoppedUpload = "stoppedUP"
 		case queuedUpload = "queuedUP"
 		case stalledUpload = "stalledUP"
 		case checkingUpload = "checkingUP"
 		case forcedUpload = "forcedUP"
-		case allocating
-		case downloading
 		case metaDownload = "metaDL"
-		case pausedDownload = "pausedDL"
+		case forcedMetaDownload = "forcedMetaDL"
+		case stoppedDownload = "stoppedDL"
 		case queuedDownload = "queuedDL"
 		case stalledDownload = "stalledDL"
 		case checkingDownload = "checkingDL"
 		case forcedDownload = "forcedDL"
+		case downloading
 		case checkingResumeData
 		case moving
 		case unknown
@@ -155,8 +155,8 @@ public struct Torrent: Decodable {
 			case inactive
 			case resumed
 			case stalled
-			case stalled_uploading
-			case stalled_downloading
+			case stalledUploading
+			case stalledDownloading
 			case errored
 		}
 	}
@@ -169,6 +169,7 @@ public struct Torrent: Decodable {
 		case doNotDownload = 0
 		case low = 1
 		case normal = 2
+		case unknown = 3
 		case high = 6
 		case maximal = 7
 	}
