@@ -20,7 +20,7 @@ public struct QBittorrentRequest<QBittorrentResponse: Decodable>: Request {
 	public var method: HTTPMethod
 	public var path: String?
 	public var headers: HTTPFields
-	public var body: RequestBody?
+	public var body: () throws -> RequestBody?
 	public var prepare: ((URLRequest) -> URLRequest)
 	public var transform: ((Data, HTTPURLResponse) throws -> Response)?
 
@@ -29,7 +29,7 @@ public struct QBittorrentRequest<QBittorrentResponse: Decodable>: Request {
 		method: String,
 		httpMethod: HTTPMethod = .post,
 		headers: HTTPFields = [:],
-		body: RequestBody? = nil,
+		body: @escaping () throws -> RequestBody? = { nil },
 		transform: (@Sendable (Data, HTTPURLResponse) throws -> Response)? = nil
 	) {
 		self.method = httpMethod
@@ -77,10 +77,10 @@ extension QBittorrentRequest {
 			let response = try JSONDecoder().decode(Response.self, from: data)
 
 			return response
-		} catch let error as QBittorrentClient.Error {
+		} catch let error as QBittorrent.Error {
 			throw error
 		} catch {
-			throw QBittorrentClient.Error.decoding(error)
+			throw QBittorrent.Error.decoding(error)
 		}
 	}
 }

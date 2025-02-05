@@ -11,11 +11,11 @@ import Combine
 import FoundationNetworking
 #endif
 
-/// Convenience typealias for the QBittorrent client.
-public typealias QBittorrentClient = Client<QBittorrentResponseError>
-
 /// A QBittorrent JSON-RPC API client.
-public final class QBittorrent: Sendable {
+public final class QBittorrent: Client, Sendable {
+	public typealias ResponseError = QBittorrentResponseError
+	public typealias Error = ClientError<ResponseError>
+
 	/// The URL of the QBittorrent server.
 	public let baseURL: URL
 	/// The username used for authentication
@@ -26,29 +26,24 @@ public final class QBittorrent: Sendable {
 	// TODO: Add BA support to APIClient...
 	public let basicAuthentication: BasicAuthentication?
 
-	private let logger: Logger
+	public let defaultHeaders: HTTPFields?
 
-	/// The underlying API Client.
-	private let client: QBittorrentClient
+	public let decoder: JSONDecoder
+
+	public let validate: @Sendable (Data, HTTPURLResponse) throws(APIClient.ClientError<QBittorrentResponseError>) -> Void
+
+	public let prepare: @Sendable (URLRequest) -> URLRequest
+
+	public let session: URLSession = .shared
+
+	private let logger = Logger(label: "QBittorrent")
 
 	/// Creates a QBittorrent client to interact with the given server URL.
 	/// - Parameters:
 	///   - baseURL: The URL of the QBittorrent server.
 	///   - password: The password used for authentication.
 	public init(baseURL: URL, username: String, password: String, basicAuthentication: BasicAuthentication? = nil) {
-		LoggingSystem.bootstrap { identifier in
-			var logger = StreamLogHandler.standardOutput(label: identifier)
-#if DEBUG
-			logger.logLevel = .debug
-#else
-			logger.logLevel = .info
-#endif
-			return logger
-		}
-
-		logger = Logger(label: "QBittorrent")
-
-		self.baseURL = baseURL
+		self.baseURL = baseURL.appending(path: "api").appending(path: "v2")
 		self.username = username
 		self.password = password
 		self.basicAuthentication = basicAuthentication
@@ -57,22 +52,17 @@ public final class QBittorrent: Sendable {
 		if let basicAuthentication {
 			headers["Authorization"] = basicAuthentication.encoded
 		}
+		self.defaultHeaders = headers
 
-		let decoder = JSONDecoder()
+		decoder = JSONDecoder()
 		decoder.keyDecodingStrategy = .convertFromSnakeCase
 
-		client = .init(
-			baseURL: self.baseURL
-				.appendingPathComponent("api")
-				.appendingPathComponent("v2"),
-			defaultHeaders: headers,
-			decoder: decoder,
-			validate: Self.validate
-		)
+		prepare = { $0 }
+		validate = Self.validate
 	}
 
 	@Sendable
-	private static func validate(data: Data, response: HTTPURLResponse) throws(QBittorrentClient.Error) {
+	private static func validate(data: Data, response: HTTPURLResponse) throws(QBittorrent.Error) {
 		switch response.statusCode {
 		case 200:
 			// In some cases... QBittorent will use the word 'Fails.' as an indication of an error (yup.. super helpful...)
@@ -96,26 +86,30 @@ public extension QBittorrent {
 	/// Sends a request to the server.
 	/// - Parameter request: The request to be sent to the server.
 	/// - Returns: A publisher that emits a value when the request completes.
-	func request<Value>(_ request: QBittorrentRequest<Value>) -> AnyPublisher<Value, QBittorrentClient.Error> {
-		let retryIfNeeded = { (error: QBittorrentClient.Error) -> AnyPublisher<Value, QBittorrentClient.Error> in
+	func request<Value>(_ request: QBittorrentRequest<Value>) -> AnyPublisher<Value, QBittorrent.Error> {
+		let retryIfNeeded = { (error: QBittorrent.Error) -> AnyPublisher<Value, QBittorrent.Error> in
 			guard case .response(.unauthenticated) = error else {
+				self.logger.error("Skipping retry for error: \(error)")
 				return Fail(error: error)
 					.eraseToAnyPublisher()
 			}
 
-			return self.request(.authenticate(username: self.username, password: self.password))
+			self.logger.debug("Retrying authentication")
+
+			return self.send(request: QBittorrentRequest<Bool>.authenticate(username: self.username, password: self.password))
 				.flatMap { authenticated in
 					guard authenticated else {
-						return Fail<Value, QBittorrentClient.Error>(error: QBittorrentClient.Error.response(.unauthenticated))
+						self.logger.error("Failed to authenticate")
+						return Fail<Value, QBittorrent.Error>(error: QBittorrent.Error.response(.unauthenticated))
 							.eraseToAnyPublisher()
 					}
 
-					return self.client.request(request)
+					return self.request(request)
 				}
 				.eraseToAnyPublisher()
 		}
 
-		return client.request(request)
+		return send(request: request)
 			.catch(retryIfNeeded)
 			.eraseToAnyPublisher()
 	}
@@ -128,19 +122,25 @@ public extension QBittorrent {
 	/// - Parameter request: The request to be sent to the server.
 	/// - Returns: A publisher that emits a value when the request completes.
 	@discardableResult
-	func request<Value>(_ request: QBittorrentRequest<Value>) async throws(QBittorrentClient.Error) -> Value {
+	func request<Value>(_ request: QBittorrentRequest<Value>) async throws(QBittorrent.Error) -> Value {
 		do {
-			return try await client.request(request)
+			return try await send(request: request)
 		} catch {
 			guard case .response(.unauthenticated) = error else {
 				throw error
 			}
 
-			let authenticated = try await client.request(QBittorrentRequest<Bool>.authenticate(username: username, password: password))
+			logger.debug("Retrying authentication")
+
+			let authenticated = try await send(
+				request: QBittorrentRequest<Bool>.authenticate(username: username, password: password)
+			)
+
 			if !authenticated {
+				logger.critical("Failed to authenticate")
 				throw .response(.unauthenticated)
 			}
-			return try await client.request(request)
+			return try await send(request: request)
 		}
 	}
 }

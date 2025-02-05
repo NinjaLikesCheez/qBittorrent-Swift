@@ -7,7 +7,7 @@
 
 import Testing
 
-@Suite("Authentication Requests")
+@Suite("Authentication Requests", .serialized)
 class AuthenticationRequestTests {
 	@Test
 	func test_authenticate() async throws {

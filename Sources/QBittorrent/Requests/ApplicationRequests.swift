@@ -29,7 +29,7 @@ public extension QBittorrentRequest {
 		.init(
 			name: "app",
 			method: "setPreferences",
-			body: JSONBody(preferences),
+			body: { JSONBody(preferences) },
 			transform: Self.statusResponse(data:response:)
 		)
 	}

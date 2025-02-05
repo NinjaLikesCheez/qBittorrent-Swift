@@ -16,7 +16,7 @@ public extension QBittorrentRequest {
 		reverse: Bool? = nil,
 		limit: Int? = nil,
 		offset: Int? = nil,
-		hashes: String? = nil
+		hashes: [String]? = nil
 	) -> QBittorrentRequest<[Torrent]> {
 		var body = [String: String]()
 
@@ -35,13 +35,13 @@ public extension QBittorrentRequest {
 		} else if let offset {
 			body["offset"] = String(offset)
 		} else if let hashes {
-			body["hashes"] = hashes
+			body["hashes"] = hashes.joined(separator: "|")
 		}
 
 		return .init(
 			name: "torrents",
 			method: "info",
-			body: FormBody(body)
+			body: { FormBody(body) }
 		)
 	}
 
@@ -49,7 +49,7 @@ public extension QBittorrentRequest {
 		.init(
 			name: "torrents",
 			method: "stop", // Yes this is called stop even though the docs say pause..........
-			body: FormBody(["hashes": hashes.joined(separator: "|")]),
+			body: { FormBody(["hashes": hashes.joined(separator: "|")]) },
 			transform: Self.statusResponse(data:response:)
 		)
 	}
@@ -58,7 +58,7 @@ public extension QBittorrentRequest {
 		.init(
 			name: "torrents",
 			method: "start", // Yes this is called start even though the docs say resume..........
-			body: FormBody(["hashes": hashes.joined(separator: "|")]),
+			body: { FormBody(["hashes": hashes.joined(separator: "|")]) },
 			transform: Self.statusResponse(data:response:)
 		)
 	}
@@ -68,7 +68,7 @@ public extension QBittorrentRequest {
 		.init(
 			name: "torrents",
 			method: "delete",
-			body: FormBody(["hashes": hashes.joined(separator: "|"), "deleteFiles": String(deleteFiles)]),
+			body: { FormBody(["hashes": hashes.joined(separator: "|"), "deleteFiles": String(deleteFiles)]) },
 			transform: Self.statusResponse(data:response:)
 		)
 	}
@@ -77,7 +77,7 @@ public extension QBittorrentRequest {
 		.init(
 			name: "torrents",
 			method: "recheck",
-			body: FormBody(["hashes": hashes.joined(separator: "|")]),
+			body: { FormBody(["hashes": hashes.joined(separator: "|")]) },
 			transform: Self.statusResponse(data:response:)
 		)
 	}
@@ -86,7 +86,7 @@ public extension QBittorrentRequest {
 		.init(
 			name: "torrents",
 			method: "addTags",
-			body: FormBody(["hashes": hashes.joined(separator: "|"), "tags": tags.joined(separator: ",")]),
+			body: { FormBody(["hashes": hashes.joined(separator: "|"), "tags": tags.joined(separator: ",")]) },
 			transform: Self.statusResponse(data:response:)
 		)
 	}
@@ -181,7 +181,7 @@ public extension QBittorrentRequest {
 		return .init(
 			name: "torrents",
 			method: "add",
-			body: MultipartFormBody(values),
+			body: { MultipartFormBody(values) },
 			transform: Self.statusResponse(data:response:)
 		)
 	}
@@ -190,7 +190,7 @@ public extension QBittorrentRequest {
 		.init(
 			name: "torrents",
 			method: "reannounce",
-			body: FormBody(["hashes": hashes.joined(separator: "|")]),
+			body: { FormBody(["hashes": hashes.joined(separator: "|")]) },
 			transform: Self.statusResponse(data:response:)
 		)
 	}
@@ -199,7 +199,7 @@ public extension QBittorrentRequest {
 		.init(
 			name: "torrents",
 			method: "renameFolder",
-			body: FormBody(["hash": hash, "oldPath": oldPath, "newPath": newPath]),
+			body: { FormBody(["hash": hash, "oldPath": oldPath, "newPath": newPath]) },
 			transform: Self.statusResponse(data:response:)
 		)
 	}
@@ -208,7 +208,7 @@ public extension QBittorrentRequest {
 		.init(
 			name: "torrents",
 			method: "renameFile",
-			body: FormBody(["hash": hash, "oldPath": oldPath, "newPath": newPath]),
+			body: { FormBody(["hash": hash, "oldPath": oldPath, "newPath": newPath]) },
 			transform: Self.statusResponse(data:response:)
 		)
 	}
@@ -222,7 +222,36 @@ public extension QBittorrentRequest {
 		return .init(
 			name: "torrents",
 			method: "files",
-			body: FormBody(arguments)
+			body: { FormBody(arguments) }
+		)
+	}
+
+	static func setLocation(hashes: [String], location: String) -> QBittorrentRequest<QBittorrent.StatusResponse> {
+		.init(
+			name: "torrents",
+			method: "setLocation",
+			body: { FormBody(["hashes": hashes.joined(separator: "|"), "location": location]) },
+			transform: Self.statusResponse(data:response:)
+		)
+	}
+
+	static func setFilePriority(
+		hash: String,
+		ids: [Int],
+		priority: Torrent.Priority
+	) -> QBittorrentRequest<QBittorrent.StatusResponse> {
+		.init(
+			name: "torrents",
+			method: "filePrio",
+			body: { FormBody(
+					[
+						"hash": hash,
+						"id": ids.map(String.init).joined(separator: "|"),
+						"priority": String(priority.rawValue)
+					]
+				)
+			},
+			transform: Self.statusResponse(data:response:)
 		)
 	}
 }

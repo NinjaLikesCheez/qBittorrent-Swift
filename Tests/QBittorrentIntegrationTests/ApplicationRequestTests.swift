@@ -7,7 +7,7 @@
 
 import Testing
 
-@Suite("Application Requests")
+@Suite("Application Requests", .serialized)
 class ApplicationRequestTests {
 	@Test
 	func test_version() async throws {

@@ -169,7 +169,9 @@ public struct Torrent: Decodable {
 		case doNotDownload = 0
 		case low = 1
 		case normal = 2
-		case unknown = 3
+		case unknown3 = 3
+    case unknown4 = 4
+    case unknown5 = 5
 		case high = 6
 		case maximal = 7
 	}
@@ -180,7 +182,7 @@ public struct Torrent: Decodable {
 		public let size: Int
 		public let progress: Double
 		public let priority: Priority
-		public let isSeed: Bool
+		public let isSeed: Bool?
 		public let pieceRange: [Int]
 		public let availability: Double
 	}

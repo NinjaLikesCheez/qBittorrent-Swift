@@ -8,7 +8,7 @@
 import Testing
 import Foundation
 
-@Suite("Torrent Requests")
+@Suite("Torrent Requests", .serialized)
 class TorrentRequestTests {
 	@Test
 	func test_torrent_info() async throws {
