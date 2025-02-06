@@ -47,12 +47,7 @@ public final class QBittorrent: Client, Sendable {
 		self.username = username
 		self.password = password
 		self.basicAuthentication = basicAuthentication
-
-		var headers = HTTPFields()
-		if let basicAuthentication {
-			headers["Authorization"] = basicAuthentication.encoded
-		}
-		self.defaultHeaders = headers
+		self.defaultHeaders = [:]
 
 		decoder = JSONDecoder()
 		decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -141,22 +136,6 @@ public extension QBittorrent {
 				throw .response(.unauthenticated)
 			}
 			return try await send(request: request)
-		}
-	}
-}
-
-public extension QBittorrent {
-	struct BasicAuthentication: Equatable, Codable, Sendable {
-		public let username: String
-		public let password: String
-
-		public init(username: String, password: String) {
-			self.username = username
-			self.password = password
-		}
-
-		var encoded: String {
-			Data("\(username):\(password)".utf8).base64EncodedString()
 		}
 	}
 }
