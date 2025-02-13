@@ -13,8 +13,8 @@ let package = Package(
 		.library(name: "QBittorrent", targets: ["QBittorrent"])
 	],
 	dependencies: [
-		.package(url: "https://github.com/NinjaLikesCheez/swift-api-client.git", branch: "main"),
-		.package(url: "https://github.com/apple/swift-log.git", from: "1.0.0")
+		.package(url: "https://github.com/NinjaLikesCheez/swift-api-client", branch: "main"),
+		.package(url: "https://github.com/apple/swift-log", from: "1.0.0")
 	],
 	targets: [
 		.target(
